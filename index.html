@@ -6,31 +6,75 @@
 <title>For Charianne 🤍</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
 body{
 font-family:'Segoe UI',sans-serif;
-background:linear-gradient(135deg,#ff8fab,#ffc2d1);
 height:100vh;
 overflow:hidden;
-color:white;
 display:flex;
 justify-content:center;
 align-items:center;
 text-align:center;
-padding:20px;
-transition:1s ease;
+color:white;
+background:linear-gradient(135deg,#ff8fab,#ffc2d1);
+transition:1.2s ease;
+position:relative;
 }
 
 body.dim{
-background:linear-gradient(135deg,#6b1f3b,#2a0f1a);
+background:linear-gradient(135deg,#4a1028,#14070c);
 }
 
-.container{max-width:700px;width:100%;}
+.container{
+max-width:700px;
+width:100%;
+position:relative;
+z-index:2;
+}
 
-.hidden{display:none;}
+.hidden{display:none !important;}
 
-h1{font-size:34px;margin-bottom:15px;}
+.fade-page{
+opacity:0;
+transform:translateY(20px);
+transition:1s ease;
+}
+
+.fade-page.show{
+opacity:1;
+transform:translateY(0);
+}
+
+.fade{
+opacity:0;
+transform:translateY(10px);
+transition:0.6s ease;
+}
+
+.fade.show{
+opacity:1;
+transform:translateY(0);
+}
+
+.heartbeat{
+animation:beat 1s infinite;
+}
+
+@keyframes beat{
+0%{transform:scale(1);}
+50%{transform:scale(1.05);}
+100%{transform:scale(1);}
+}
+
+h1{
+font-size:34px;
+margin-bottom:15px;
+}
 
 p{
 font-size:18px;
@@ -48,45 +92,97 @@ color:#ff4f7b;
 font-size:16px;
 cursor:pointer;
 font-weight:bold;
-transition:.2s;
+transition:.25s;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
 }
 
-button:hover{transform:scale(1.05);}
+button:hover{
+transform:scale(1.08);
+}
 
-.no-btn{position:relative;}
-
+/* HEARTS */
 .heart{
 position:absolute;
-bottom:-20px;
-font-size:18px;
-animation:float 6s linear infinite;
+animation:floatUp linear forwards;
+pointer-events:none;
+z-index:1;
+opacity:0.9;
 }
 
-@keyframes float{
-0%{transform:translateY(0);opacity:0;}
-20%{opacity:1;}
-100%{transform:translateY(-110vh);opacity:0;}
+@keyframes floatUp{
+from{transform:translateY(0) scale(1);opacity:1;}
+to{transform:translateY(-120vh) scale(1.8);opacity:0;}
 }
 
-.fade{
+/* 💋 KISSES (NEW) */
+.kiss{
+position:absolute;
+animation:kissUp linear forwards;
+pointer-events:none;
+z-index:2;
+opacity:0.95;
+}
+
+@keyframes kissUp{
+from{transform:translateY(0) scale(1);opacity:1;}
+to{transform:translateY(-130vh) scale(2);opacity:0;}
+}
+
+/* ENVELOPE */
+.envelope-wrapper{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+}
+
+.envelope{
+width:140px;
+height:90px;
+background:#fff;
+position:relative;
+cursor:pointer;
+border-radius:8px;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+transition:0.6s;
+}
+
+.envelope:before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:0;
+height:0;
+border-left:70px solid transparent;
+border-right:70px solid transparent;
+border-bottom:60px solid #ff4f7b;
+}
+
+.letter{
+margin-top:20px;
 opacity:0;
-transform:translateY(10px);
-transition:0.6s ease;
+transform:translateY(20px);
+transition:1s;
 }
 
-.fade.show{
+.letter.show{
 opacity:1;
 transform:translateY(0);
 }
 
-.heartbeat{
-animation:beat 1.2s infinite;
+/* FINAL BURST */
+.burst-heart{
+position:absolute;
+font-size:18px;
+animation:burst 1.8s ease-out forwards;
+pointer-events:none;
+z-index:999;
 }
 
-@keyframes beat{
-0%{transform:scale(1);}
-50%{transform:scale(1.03);}
-100%{transform:scale(1);}
+@keyframes burst{
+0%{transform:scale(0);opacity:1;}
+100%{transform:scale(3) translateY(-200px);opacity:0;}
 }
 </style>
 </head>
@@ -95,130 +191,196 @@ animation:beat 1.2s infinite;
 
 <div class="container">
 
-<div id="s1">
+<div id="s1" class="fade-page show">
 <h1>Hiiiiii! 🤍</h1>
 <p>Before anything else... I need your full attention po 😌</p>
-<button onclick="startExperience()">Okay</button>
+<button onclick="startMusic(); next(2)">Okay</button>
 </div>
 
-<div id="s2" class="hidden">
+<div id="s2" class="fade-page hidden">
+<h1>I made something for you...</h1>
+<button onclick="next(3)">Start</button>
+</div>
+
+<div id="s3" class="fade-page hidden">
+<h1>Before we continue 👀</h1>
+<p>DISCLAIMER:
+Long message ahead 😁🤍</p>
+<button onclick="next(4)">Continue</button>
+</div>
+
+<div id="s4" class="fade-page hidden">
 <h1>Important Checkpoint 😏</h1>
 <p>Answer honestly okay? No escaping 👀</p>
-<button onclick="next(3)">Proceed</button>
+<button onclick="next(5)">Proceed</button>
 </div>
 
-<div id="s3" class="hidden">
+<div id="s5" class="fade-page hidden">
 <h1>Quick Question 🤍</h1>
 <p>Do you like me?</p>
-<button onclick="next(4)">YES 🤍</button>
-<button id="noBtn" onmouseover="runAway()">NO 😌</button>
+<button onclick="next(6)">YES 🤍</button>
+<button onclick="runAway()" id="noBtn">NO 😌</button>
 </div>
 
-<div id="s4" class="hidden">
+<div id="s6" class="fade-page hidden">
 <h1>Final check 😏</h1>
 <p>Do you love me na?</p>
-<button onclick="next(5)">YES</button>
-<button id="noBtn2" onmouseover="runAway2()">NO</button>
+<button onclick="next(7)">YES</button>
+<button onclick="runAway2()" id="noBtn2">NO</button>
 </div>
 
-<div id="s5" class="hidden">
+<div id="s7" class="fade-page hidden">
+
+<div class="envelope-wrapper">
+<div class="envelope" onclick="openEnvelope()" id="env"></div>
+
+<div class="letter" id="letterBox">
 
 <h1>💌</h1>
-
 <div id="box"></div>
 
 <div style="display:flex;gap:10px;justify-content:center;margin-top:10px;flex-wrap:wrap;">
-<button id="prevBtn" onclick="showPrev()" style="display:none;">Previous</button>
+<button id="prevBtn" onclick="showPrev()">Previous</button>
 <button id="nextBtn" onclick="showNext()">Continue</button>
 </div>
 
-<button id="finalBtn" class="hidden" onclick="next(6)">One last thing</button>
+<button id="finalBtn" class="hidden" onclick="next(8); heartExplosion(); kissExplosion();">
+One last thing
+</button>
 
 </div>
+</div>
+</div>
 
-<div id="s6" class="hidden">
+<div id="s8" class="fade-page hidden">
 <h1>I love you! 🤍</h1>
-<p>Thank you for reading everything 🥺</p>
+<p>Thank you for reading 🫶🥺</p>
 </div>
 
 </div>
 
 <script>
 
-/* 🎵 REAL WORKING MUSIC (NO FILES, NO YOUTUBE) */
 let audioCtx;
-let musicStarted = false;
+let musicStarted=false;
 
 function startMusic(){
-if(musicStarted) return;
-musicStarted = true;
+if(musicStarted)return;
+musicStarted=true;
 
-audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+audioCtx=new (window.AudioContext||window.webkitAudioContext)();
 
-/* romantic piano loop (Don’t Throw It All Away vibe) */
-function note(freq, time){
-const osc = audioCtx.createOscillator();
-const gain = audioCtx.createGain();
+function play(f,t,d){
+setTimeout(()=>{
+const o=audioCtx.createOscillator();
+const g=audioCtx.createGain();
 
-osc.type = "sine";
-osc.frequency.value = freq;
+o.type="sine";
+o.frequency.value=f;
 
-gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + time);
+g.gain.setValueAtTime(0.05,audioCtx.currentTime);
+g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+t);
 
-osc.connect(gain);
-gain.connect(audioCtx.destination);
+o.connect(g);
+g.connect(audioCtx.destination);
 
-osc.start();
-osc.stop(audioCtx.currentTime + time);
+o.start();
+o.stop(audioCtx.currentTime+t);
+},d);
 }
 
-setInterval(()=>{
-note(262,1.2);
-setTimeout(()=>note(330,1.2),200);
-setTimeout(()=>note(392,1.2),400);
-setTimeout(()=>note(330,1.2),600);
-},1800);
+function loop(){
+play(262,1,0);
+play(330,1,300);
+play(392,1,600);
+play(330,1,900);
 }
 
-/* start */
-function startExperience(){
-startMusic();
-next(2);
+loop();
+setInterval(loop,2200);
 }
 
-/* navigation */
 function next(step){
-for(let i=1;i<=6;i++){
-document.getElementById("s"+i).style.display="none";
-}
-document.getElementById("s"+step).style.display="block";
 
-if(step===5){
+document.querySelectorAll(".fade-page").forEach(e=>{
+e.classList.remove("show");
+e.classList.add("hidden");
+});
+
+setTimeout(()=>{
+const el=document.getElementById("s"+step);
+el.classList.remove("hidden");
+setTimeout(()=>el.classList.add("show"),50);
+
+if(step===7){
 document.body.classList.add("dim");
 startMessage();
 }
+
+if(step===8){
+for(let i=0;i<200;i++){
+setTimeout(createHeart,i*20);
+setTimeout(createKiss,i*25);
+}
 }
 
-/* runaway */
-function runAway(){
-const b=document.getElementById("noBtn");
-moveButton(b);
-b.innerText="NO 😌";
+},300);
 }
 
-function runAway2(){
-const b=document.getElementById("noBtn2");
-moveButton(b);
-b.innerText="NO 😏";
+function openEnvelope(){
+document.getElementById("env").style.display="none";
+document.getElementById("letterBox").classList.add("show");
 }
 
-function moveButton(btn){
-const x=Math.random()*(window.innerWidth-100);
-const y=Math.random()*(window.innerHeight-100);
-btn.style.position="fixed";
-btn.style.left=x+"px";
-btn.style.top=y+"px";
+/* HEARTS */
+function createHeart(){
+const h=document.createElement("div");
+h.className="heart";
+h.innerHTML="🤍";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=(12+Math.random()*30)+"px";
+h.style.animationDuration=(2.5+Math.random()*4)+"s";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),7000);
+}
+
+/* 💋 KISSES */
+function createKiss(){
+const k=document.createElement("div");
+k.className="kiss";
+k.innerHTML="💋";
+k.style.left=Math.random()*100+"vw";
+k.style.fontSize=(14+Math.random()*28)+"px";
+k.style.animationDuration=(2+Math.random()*3.5)+"s";
+document.body.appendChild(k);
+setTimeout(()=>k.remove(),7000);
+}
+
+/* EXPLOSIONS */
+function heartExplosion(){
+for(let i=0;i<120;i++){
+const h=document.createElement("div");
+h.className="burst-heart";
+h.innerHTML="🤍";
+h.style.left=Math.random()*100+"%";
+h.style.top=Math.random()*100+"%";
+h.style.fontSize=(10+Math.random()*25)+"px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),1800);
+}
+}
+
+function kissExplosion(){
+for(let i=0;i<80;i++){
+const k=document.createElement("div");
+k.className="burst-heart";
+k.innerHTML="💋";
+k.style.left=Math.random()*100+"%";
+k.style.top=Math.random()*100+"%";
+k.style.fontSize=(10+Math.random()*25)+"px";
+document.body.appendChild(k);
+setTimeout(()=>k.remove(),1800);
+}
 }
 
 /* MESSAGE (UNCHANGED) */
@@ -268,68 +430,47 @@ And once again...
 
 Happiest birthday, my love 🫶🤍`;
 
-/* MESSAGE SYSTEM */
 let parts=[], index=0;
 
 function startMessage(){
-document.getElementById("box").innerHTML="";
 parts=text.split("\n\n");
 index=0;
+document.getElementById("box").innerHTML="";
 showParagraph();
-updateButtons();
 }
 
-function showNext(){
-if(index<parts.length-1){
-index++;
-showParagraph();
-updateButtons();
-}
-}
-
-function showPrev(){
-if(index>0){
-index--;
-showParagraph();
-updateButtons();
-}
-}
-
-function updateButtons(){
-document.getElementById("prevBtn").style.display=index>0?"inline-block":"none";
-}
+function showNext(){ if(index<parts.length-1){index++;showParagraph();} }
+function showPrev(){ if(index>0){index--;showParagraph();} }
 
 function showParagraph(){
 const box=document.getElementById("box");
 box.innerHTML="";
-
 const p=document.createElement("p");
 p.className="fade";
 p.innerText=parts[index];
-
 box.appendChild(p);
-
 setTimeout(()=>p.classList.add("show"),50);
 
+document.getElementById("prevBtn").style.display=index>0?"inline-block":"none";
+
 if(index===parts.length-1){
-p.classList.add("heartbeat");
 document.getElementById("nextBtn").style.display="none";
-
-setTimeout(()=>{
-document.getElementById("finalBtn").classList.remove("hidden");
-},800);
+setTimeout(()=>document.getElementById("finalBtn").classList.remove("hidden"),800);
+}else{
+document.getElementById("nextBtn").style.display="inline-block";
+document.getElementById("finalBtn").classList.add("hidden");
 }
 }
 
-/* hearts */
-setInterval(()=>{
-const h=document.createElement("div");
-h.className="heart";
-h.innerHTML="🤍";
-h.style.left=Math.random()*100+"vw";
-document.body.appendChild(h);
-setTimeout(()=>h.remove(),6000);
-},300);
+function runAway(){ moveBtn("noBtn"); }
+function runAway2(){ moveBtn("noBtn2"); }
+
+function moveBtn(id){
+const btn=document.getElementById(id);
+btn.style.position="fixed";
+btn.style.left=Math.random()*80+"vw";
+btn.style.top=Math.random()*80+"vh";
+}
 
 </script>
 
